@@ -13,10 +13,11 @@ export interface ApiError {
 
 /** Generic paginated response wrapper. */
 export interface PaginatedResponse<T> {
-  data: T[];
+  items: T[];
   page: number;
+  size: number;
+  totalElements: number;
   totalPages: number;
-  totalItems: number;
 }
 
 /** Generic API response wrapper. */

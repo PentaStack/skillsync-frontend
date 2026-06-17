@@ -1,14 +1,7 @@
 import { apiClient } from "@/lib/api-client";
 import type { PaginatedResponse } from "@/lib/types";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
 import type { Availability, Mentor, MentorFilters } from "../types";
-
-/**
- * Mentor API endpoints.
- *
- * GET /api/mentors                        → Paginated mentor list with filters
- * GET /api/mentors/:id                    → Single mentor profile
- * GET /api/mentors/:id/availability       → Available slots for a date
- */
 
 export async function getMentors(
   filters: MentorFilters = {},
@@ -16,9 +9,10 @@ export async function getMentors(
   const params = new URLSearchParams();
 
   if (filters.keyword) params.set("keyword", filters.keyword);
-  if (filters.stackId) params.set("stack", String(filters.stackId));
+  if (filters.stackIds?.length) params.set("stack", filters.stackIds.join(","));
   if (filters.sortBy) params.set("sort_by", filters.sortBy);
-  if (filters.page) params.set("page", String(filters.page));
+  if (filters.page !== undefined) params.set("page", String(filters.page));
+  params.set("size", String(filters.size ?? ITEMS_PER_PAGE));
 
   const { data } = await apiClient.get<PaginatedResponse<Mentor>>(
     `/mentors?${params.toString()}`,
