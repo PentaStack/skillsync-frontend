@@ -32,6 +32,7 @@ export interface User {
   name: string;
   email: string;
   role: RoleType;
+  profileId?: number;
   avatar?: string;
   createdAt: string;
 }

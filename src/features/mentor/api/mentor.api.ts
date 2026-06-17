@@ -25,6 +25,14 @@ export async function getMentorById(id: number): Promise<Mentor> {
   return data;
 }
 
+export async function updateMentor(
+  id: number,
+  mentorData: { title: string; bio: string; hourlyRate: number; available: boolean }
+): Promise<Mentor> {
+  const { data } = await apiClient.put<Mentor>(`/mentors/${id}`, mentorData);
+  return data;
+}
+
 export async function getMentorAvailability(
   mentorId: number,
   date: string,

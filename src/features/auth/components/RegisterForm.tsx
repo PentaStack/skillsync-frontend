@@ -38,7 +38,7 @@ const registerSchema = registerBaseSchema
     {
       message: "Specialty title is required for mentors",
       path: ["title"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -50,7 +50,7 @@ const registerSchema = registerBaseSchema
     {
       message: "Hourly rate is required for mentors",
       path: ["hourlyRate"],
-    }
+    },
   );
 
 type RegisterFormValues = z.infer<typeof registerBaseSchema>;
@@ -59,7 +59,9 @@ export function RegisterForm() {
   const { t } = useI18n();
   const navigate = useNavigate();
   const registerMutation = useRegister();
-  const [selectedRole, setSelectedRole] = useState<"STUDENT" | "MENTOR">("STUDENT");
+  const [selectedRole, setSelectedRole] = useState<"STUDENT" | "MENTOR">(
+    "STUDENT",
+  );
 
   const {
     register,
@@ -101,11 +103,15 @@ export function RegisterForm() {
 
     registerMutation.mutate(payload, {
       onSuccess: () => {
-        toast.success(t("auth.createAccountSuccess") || "Account created successfully!");
+        toast.success(
+          t("auth.createAccountSuccess") || "Account created successfully!",
+        );
         navigate("/login");
       },
       onError: (err: any) => {
-        toast.error(err.message || "Registration failed. Email might already be taken.");
+        toast.error(
+          err.message || "Registration failed. Email might already be taken.",
+        );
       },
     });
   };
@@ -115,7 +121,11 @@ export function RegisterForm() {
     if (!passwordVal) return 0;
     let score = 1;
     if (passwordVal.length > 5) score = 2;
-    if (passwordVal.length > 8 && /[0-9]/.test(passwordVal) && /[^A-Za-z0-9]/.test(passwordVal)) {
+    if (
+      passwordVal.length > 8 &&
+      /[0-9]/.test(passwordVal) &&
+      /[^A-Za-z0-9]/.test(passwordVal)
+    ) {
       score = 3;
     }
     return score;
@@ -127,7 +137,10 @@ export function RegisterForm() {
     <div className="w-full max-w-[500px]">
       {/* Logo & Headline for Mobile */}
       <div className="text-center lg:hidden mb-8">
-        <Link to="/" className="font-display text-display-lg-mobile italic text-primary">
+        <Link
+          to="/"
+          className="font-display text-display-lg-mobile italic text-primary"
+        >
           SkillSync
         </Link>
         <h1 className="font-display text-[32px] leading-[1.2] italic text-text-primary mt-2">
@@ -142,7 +155,10 @@ export function RegisterForm() {
         </h2>
 
         {/* Role Selector Segmented Control */}
-        <div className="flex rounded-lg bg-surface-container-high p-1 mb-8" role="tablist">
+        <div
+          className="flex rounded-lg bg-surface-container-high p-1 mb-8"
+          role="tablist"
+        >
           <button
             type="button"
             onClick={() => handleRoleChange("STUDENT")}
@@ -206,8 +222,8 @@ export function RegisterForm() {
                         ? strength === 1
                           ? "bg-error"
                           : strength === 2
-                          ? "bg-outline"
-                          : "bg-primary-container"
+                            ? "bg-outline"
+                            : "bg-primary-container"
                         : "bg-surface-container-high"
                     }`}
                   />
@@ -222,7 +238,9 @@ export function RegisterForm() {
                   />
                   <div
                     className={`h-full flex-1 rounded-full transition-colors ${
-                      strength >= 3 ? "bg-primary-container" : "bg-surface-container-high"
+                      strength >= 3
+                        ? "bg-primary-container"
+                        : "bg-surface-container-high"
                     }`}
                   />
                 </div>
@@ -319,11 +337,17 @@ export function RegisterForm() {
               className="font-body text-body-md text-[14px] text-text-secondary leading-snug cursor-pointer select-none"
             >
               I agree to the{" "}
-              <a href="#" className="text-primary hover:underline underline-offset-2">
+              <a
+                href="#"
+                className="text-primary hover:underline underline-offset-2"
+              >
                 Terms of Service
               </a>{" "}
               and{" "}
-              <a href="#" className="text-primary hover:underline underline-offset-2">
+              <a
+                href="#"
+                className="text-primary hover:underline underline-offset-2"
+              >
                 Ethical Code
               </a>
               .
@@ -345,7 +369,10 @@ export function RegisterForm() {
       {/* Redirection Link */}
       <p className="text-center mt-8 font-body text-body-md text-text-secondary">
         Already have an account?{" "}
-        <Link to="/login" className="text-primary hover:underline underline-offset-4">
+        <Link
+          to="/login"
+          className="text-primary hover:underline underline-offset-4"
+        >
           Sign in
         </Link>
       </p>
