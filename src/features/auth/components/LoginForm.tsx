@@ -66,7 +66,10 @@ export function LoginForm() {
     <div className="w-full max-w-[500px]">
       {/* Logo & Headline for Mobile */}
       <div className="text-center lg:hidden mb-8">
-        <Link to="/" className="font-display text-display-lg-mobile italic text-primary">
+        <Link
+          to="/"
+          className="font-display text-display-lg-mobile italic text-primary"
+        >
           SkillSync
         </Link>
         <h1 className="font-display text-[32px] leading-[1.2] italic text-text-primary mt-2">
@@ -117,7 +120,10 @@ export function LoginForm() {
       {/* Redirection Link */}
       <p className="text-center mt-8 font-body text-body-md text-text-secondary">
         New to the community?{" "}
-        <Link to="/register" className="text-primary hover:underline underline-offset-4">
+        <Link
+          to="/register"
+          className="text-primary hover:underline underline-offset-4"
+        >
           Create an account
         </Link>
       </p>

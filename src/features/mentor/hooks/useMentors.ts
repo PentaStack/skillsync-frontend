@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as mentorApi from "../api/mentor.api";
 import type { MentorFilters } from "../types";
 
@@ -29,5 +29,17 @@ export function useMentorAvailability(mentorId: number, date: string) {
     queryKey: ["mentors", mentorId, "availability", date],
     queryFn: () => mentorApi.getMentorAvailability(mentorId, date),
     enabled: !!mentorId && !!date,
+  });
+}
+
+/** Update a mentor's profile. */
+export function useUpdateMentor(id: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { title: string; bio: string; hourlyRate: number; available: boolean }) =>
+      mentorApi.updateMentor(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mentors", id] });
+    },
   });
 }
