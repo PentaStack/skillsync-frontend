@@ -1,13 +1,16 @@
+import { useAuthStore } from "@/stores/auth.store";
+import MentorProfilePage from "./../../mentor/pages/MentorProfilePage";
+
 /**
  * ProfilePage — Contextual workspace to adjust user profiles.
- *
- * TODO: Implement profile editor with:
- * - Display current user info (useProfile hook)
- * - Edit name, avatar, bio
- * - Mentor-specific: edit tech stacks, hourly rate
- * - Student-specific: edit learning goals
  */
 export default function ProfilePage() {
+  const { user } = useAuthStore();
+
+  if (user?.role === "MENTOR") {
+    return <MentorProfilePage />;
+  }
+
   return (
     <div className="mx-auto max-w-container px-gutter py-8">
       <h1 className="font-display text-display-lg-mobile italic text-text-primary md:text-display-lg">

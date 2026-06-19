@@ -9,9 +9,7 @@ import { LoadingFallback } from "@/components/feedback";
 const RootLayout = lazy(() => import("@/components/layout/RootLayout"));
 
 /* ─── Lazy-loaded pages ────────────────────────────────────────────── */
-const MentorDiscoveryPage = lazy(
-  () => import("@/features/mentor/pages/MentorDiscoveryPage"),
-);
+const HomePage = lazy(() => import("@/pages/HomePage"));
 const MentorProfilePage = lazy(
   () => import("@/features/mentor/pages/MentorProfilePage"),
 );
@@ -24,25 +22,26 @@ const StudentDashboardPage = lazy(
 const AdminDashboardPage = lazy(
   () => import("@/features/admin/pages/AdminDashboardPage"),
 );
+const AdminMentorListPage = lazy(
+  () => import("@/features/admin/pages/AdminMentorListPage"),
+);
+const AdminMentorDetailPage = lazy(
+  () => import("@/features/admin/pages/AdminMentorDetailPage"),
+);
+const AdminStudentListPage = lazy(
+  () => import("@/features/admin/pages/AdminStudentListPage"),
+);
+const AdminStudentDetailPage = lazy(
+  () => import("@/features/admin/pages/AdminStudentDetailPage"),
+);
+const AdminStackListPage = lazy(
+  () => import("@/features/admin/pages/AdminStackListPage"),
+);
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/features/auth/pages/RegisterPage"));
 const ProfilePage = lazy(() => import("@/features/auth/pages/ProfilePage"));
 const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
-/**
- * Application router — all routes with lazy loading + role guards.
- *
- * Route structure:
- *   /                   → Mentor Discovery (public)
- *   /login              → Login
- *   /register           → Register
- *   /mentors/:id        → Mentor Profile & Booking
- *   /dashboard          → Student Dashboard (STUDENT only)
- *   /mentor/dashboard   → Mentor Dashboard (MENTOR only)
- *   /admin              → Admin Dashboard (ADMIN only)
- *   /profile            → Profile Customization (any auth)
- *   *                   → 404 Not Found
- */
 export const router = createBrowserRouter([
   {
     element: (
@@ -56,7 +55,7 @@ export const router = createBrowserRouter([
         path: "/",
         element: (
           <Suspense fallback={<LoadingFallback />}>
-            <MentorDiscoveryPage />
+            <HomePage />
           </Suspense>
         ),
       },
@@ -139,6 +138,46 @@ export const router = createBrowserRouter([
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <AdminDashboardPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin/mentors",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <AdminMentorListPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin/mentors/:id",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <AdminMentorDetailPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin/students",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <AdminStudentListPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin/students/:id",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <AdminStudentDetailPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/admin/stacks",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <AdminStackListPage />
               </Suspense>
             ),
           },

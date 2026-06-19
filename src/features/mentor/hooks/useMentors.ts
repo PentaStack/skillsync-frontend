@@ -73,3 +73,15 @@ export function useDeleteAvailabilityWindow(mentorId: number) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["mentors", mentorId, "availability", "windows"] }),
   });
 }
+
+/** Update a mentor's profile. */
+export function useUpdateMentor(id: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { title: string; bio: string; hourlyRate: number; available: boolean }) =>
+      mentorApi.updateMentor(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mentors", id] });
+    },
+  });
+}

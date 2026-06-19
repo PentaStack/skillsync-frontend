@@ -18,4 +18,11 @@ export interface UserStatusPayload {
 /** Payload for creating a new tech stack. */
 export interface CreateStackPayload {
   name: string;
+  description?: string;
+}
+
+/** Payload for updating an existing tech stack. */
+export interface UpdateStackPayload {
+  name: string;
+  description?: string;
 }

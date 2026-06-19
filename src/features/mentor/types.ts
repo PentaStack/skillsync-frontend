@@ -1,7 +1,15 @@
-import type { User } from "@/lib/types";
+/** Tech stack / specialization. */
+export interface Stack {
+  id: number;
+  name: string;
+  description?: string;
+}
 
-/** Extended mentor profile. */
-export interface Mentor extends User {
+/** Mentor profile for discovery and detail views. */
+export interface Mentor {
+  id: number;
+  name: string;
+  email: string;
   bio: string;
   title: string;
   stacks: Stack[];
@@ -9,12 +17,7 @@ export interface Mentor extends User {
   hourlyRate: number;
   totalSessions: number;
   isApproved: boolean;
-}
-
-/** Tech stack / specialization. */
-export interface Stack {
-  id: number;
-  name: string;
+  available?: boolean;
 }
 
 /** A single availability time slot. */
@@ -34,9 +37,10 @@ export interface Availability {
 /** Filters for the mentor discovery search. */
 export interface MentorFilters {
   keyword?: string;
-  stackId?: number;
+  stackIds?: number[];
   sortBy?: "rating" | "price" | "availability";
   page?: number;
+  size?: number;
 }
 
 /** A weekly recurring availability window for a mentor. */
