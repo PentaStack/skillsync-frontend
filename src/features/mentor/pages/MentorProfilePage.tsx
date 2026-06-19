@@ -22,14 +22,18 @@ import { useMentorProfile, useUpdateMentor } from "../hooks/useMentors";
 import { SlotPicker } from "../components/SlotPicker";
 import { useAuthStore } from "@/stores/auth.store";
 import { useI18n } from "@/i18n/i18n";
+import { Role } from "@/lib/constants";
 
 export default function MentorProfilePage() {
     const { t } = useI18n();
     const { id } = useParams<{ id: string }>();
     const { user } = useAuthStore();
 
-    // If we're at /profile, id will be undefined, so fallback to user.profileId
     const mentorId = Number(id) || user?.profileId || 0;
+
+    const isMentorOwner =
+        user?.role === Role.MENTOR && (!id || mentorId === user?.profileId);
+    const canBook = user?.role === Role.STUDENT;
 
     const { data: mentor, isLoading, error } = useMentorProfile(mentorId);
     const updateMentorMutation = useUpdateMentor(mentorId);
@@ -114,17 +118,16 @@ export default function MentorProfilePage() {
                             <h1 className="font-display text-headline-md italic text-text-primary">
                                 {mentor.name}
                             </h1>
-                            {!isEditing &&
-                                (!id || mentorId === user?.profileId) && (
-                                    <Button
-                                        variant="secondary"
-                                        onClick={handleEdit}
-                                        className="ml-4 flex-shrink-0"
-                                    >
-                                        <Edit2 className="h-4 w-4 mr-2" />
-                                        Edit Profile
-                                    </Button>
-                                )}
+                            {!isEditing && isMentorOwner && (
+                                <Button
+                                    variant="secondary"
+                                    onClick={handleEdit}
+                                    className="ml-4 shrink-0"
+                                >
+                                    <Edit2 className="h-4 w-4 mr-2" />
+                                    Edit Profile
+                                </Button>
+                            )}
                         </div>
 
                         {isEditing ? (
@@ -177,7 +180,7 @@ export default function MentorProfilePage() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface-container-high p-4 min-w-[200px]">
+                    <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface-container-high p-4 min-w-50">
                         <div className="flex items-center gap-2 text-ember">
                             <Star className="h-5 w-5 fill-current" />
                             <span className="text-2xl font-semibold">
@@ -230,7 +233,7 @@ export default function MentorProfilePage() {
                     {isEditing ? (
                         <div className="space-y-4">
                             <textarea
-                                className="w-full rounded bg-surface px-4 py-3 font-body text-body-md text-text-primary border-b-2 border-text-secondary/30 outline-none transition-all duration-200 placeholder:text-text-secondary/50 focus:border-ember focus:-translate-y-px min-h-[150px] resize-y"
+                                className="w-full rounded bg-surface px-4 py-3 font-body text-body-md text-text-primary border-b-2 border-text-secondary/30 outline-none transition-all duration-200 placeholder:text-text-secondary/50 focus:border-ember focus:-translate-y-px min-h-37.5 resize-y"
                                 value={formData.bio}
                                 onChange={(e) =>
                                     setFormData({
@@ -276,7 +279,7 @@ export default function MentorProfilePage() {
                     <SlotPicker
                         mentorId={mentorId}
                         mentorName={mentor.name}
-                        canBook={!!id && mentorId !== user?.profileId}
+                        canBook={canBook}
                     />
                 </Card>
             </section>
