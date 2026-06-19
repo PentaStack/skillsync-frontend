@@ -1,7 +1,14 @@
 import { apiClient } from "@/lib/api-client";
 import type { PaginatedResponse } from "@/lib/types";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import type { Availability, Mentor, MentorFilters } from "../types";
+import type {
+  Availability,
+  AvailabilityWindow,
+  AvailabilityWindowPayload,
+  AvailableSlotsResponse,
+  Mentor,
+  MentorFilters,
+} from "../types";
 
 export async function getMentors(
   filters: MentorFilters = {},
@@ -41,4 +48,53 @@ export async function getMentorAvailability(
     `/mentors/${mentorId}/availability?date=${date}`,
   );
   return data;
+}
+
+export async function getAvailableSlots(
+  mentorId: number,
+  date: string,
+): Promise<AvailableSlotsResponse> {
+  const { data } = await apiClient.get<AvailableSlotsResponse>(
+    `/mentors/${mentorId}/available-slots?date=${date}`,
+  );
+  return data;
+}
+
+export async function getAvailabilityWindows(
+  mentorId: number,
+): Promise<AvailabilityWindow[]> {
+  const { data } = await apiClient.get<AvailabilityWindow[]>(
+    `/mentors/${mentorId}/availability`,
+  );
+  return data;
+}
+
+export async function createWindow(
+  mentorId: number,
+  payload: AvailabilityWindowPayload,
+): Promise<AvailabilityWindow> {
+  const { data } = await apiClient.post<AvailabilityWindow>(
+    `/mentors/${mentorId}/availability`,
+    payload,
+  );
+  return data;
+}
+
+export async function updateWindow(
+  mentorId: number,
+  windowId: number,
+  payload: AvailabilityWindowPayload,
+): Promise<AvailabilityWindow> {
+  const { data } = await apiClient.put<AvailabilityWindow>(
+    `/mentors/${mentorId}/availability/${windowId}`,
+    payload,
+  );
+  return data;
+}
+
+export async function deleteWindow(
+  mentorId: number,
+  windowId: number,
+): Promise<void> {
+  await apiClient.delete(`/mentors/${mentorId}/availability/${windowId}`);
 }

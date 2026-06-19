@@ -1,8 +1,11 @@
-import { CheckCircle2, FilePenLine, Hourglass } from "lucide-react";
+import { CalendarClock, CheckCircle2, FilePenLine, Hourglass } from "lucide-react";
 import { useState } from "react";
 import { Badge, Button, Card, EmptyState, Input, SkeletonCard } from "@/components/ui";
 import { useSessions, useUpdateSession } from "@/features/session";
 import type { Session } from "@/features/session";
+import { AvailabilityEditor } from "../components/AvailabilityEditor";
+import { useAuthStore } from "@/stores/auth.store";
+import { useI18n } from "@/i18n/i18n";
 import type { ComponentProps } from "react";
 
 type BadgeVariant = NonNullable<ComponentProps<typeof Badge>["variant"]>;
@@ -14,7 +17,10 @@ function statusVariant(status: string): BadgeVariant {
 }
 
 export default function MentorDashboardPage() {
+  const { t } = useI18n();
   const { data, isLoading } = useSessions();
+  const { user } = useAuthStore();
+  const mentorId = user?.profileId ?? 0;
   const [selectedId, setSelectedId] = useState("");
   const [evaluationNotes, setEvaluationNotes] = useState("");
   const updateMutation = useUpdateSession(Number(selectedId));
@@ -45,6 +51,14 @@ export default function MentorDashboardPage() {
           <div className="text-sm text-text-secondary">Completed sessions</div>
           <div className="mt-2 text-3xl font-semibold text-text-primary">{completed.length}</div>
         </Card>
+      </section>
+
+      <section className="mb-10">
+        <div className="mb-4 flex items-center gap-2">
+          <CalendarClock className="h-5 w-5 text-ember" />
+          <h2 className="text-lg font-semibold text-text-primary">{t("availability.sectionTitle")}</h2>
+        </div>
+        <AvailabilityEditor mentorId={mentorId} />
       </section>
 
       <section className="mb-10">
