@@ -1,4 +1,5 @@
 import { CheckCircle2, FilePenLine, Hourglass } from "lucide-react";
+import AvailabilityEditor from "../components/AvailabilityEditor";
 import { useState } from "react";
 import { Badge, Button, Card, EmptyState, Input, SkeletonCard } from "@/components/ui";
 import { useSessions, useUpdateSession } from "@/features/session";
@@ -70,6 +71,10 @@ export default function MentorDashboardPage() {
             Save notes
           </Button>
         </div>
+      </section>
+
+      <section className="mb-10">
+        <AvailabilityEditor />
       </section>
 
       <section className="space-y-8">

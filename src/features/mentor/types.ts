@@ -38,3 +38,17 @@ export interface MentorFilters {
   sortBy?: "rating" | "price" | "availability";
   page?: number;
 }
+
+/** A weekly recurring availability window for a mentor. */
+export interface AvailabilityWindow {
+  id: number;
+  dayOfWeek: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface AvailabilityWindowInput {
+  dayOfWeek: string;
+  startTime: string;
+  endTime: string;
+}

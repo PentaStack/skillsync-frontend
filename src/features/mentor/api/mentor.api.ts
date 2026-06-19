@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/api-client";
 import type { PaginatedResponse } from "@/lib/types";
-import type { Availability, Mentor, MentorFilters } from "../types";
+import type { Availability, AvailabilityWindow, AvailabilityWindowInput, Mentor, MentorFilters } from "../types";
 
 /**
  * Mentor API endpoints.
@@ -39,4 +39,28 @@ export async function getMentorAvailability(
     `/mentors/${mentorId}/availability?date=${date}`,
   );
   return data;
+}
+
+export async function getMyMentorId(): Promise<{ mentorId: number }> {
+  const { data } = await apiClient.get<{ mentorId: number }>("/mentors/me");
+  return data;
+}
+
+export async function getAvailabilityWindows(mentorId: number): Promise<AvailabilityWindow[]> {
+  const { data } = await apiClient.get<AvailabilityWindow[]>(`/mentors/${mentorId}/availability/windows`);
+  return data;
+}
+
+export async function createAvailabilityWindow(mentorId: number, body: AvailabilityWindowInput): Promise<AvailabilityWindow> {
+  const { data } = await apiClient.post<AvailabilityWindow>(`/mentors/${mentorId}/availability/windows`, body);
+  return data;
+}
+
+export async function updateAvailabilityWindow(mentorId: number, windowId: number, body: AvailabilityWindowInput): Promise<AvailabilityWindow> {
+  const { data } = await apiClient.put<AvailabilityWindow>(`/mentors/${mentorId}/availability/windows/${windowId}`, body);
+  return data;
+}
+
+export async function deleteAvailabilityWindow(mentorId: number, windowId: number): Promise<void> {
+  await apiClient.delete(`/mentors/${mentorId}/availability/windows/${windowId}`);
 }

@@ -1,2 +1,2 @@
-export { useMentors, useMentorProfile, useMentorAvailability } from "./hooks/useMentors";
-export type { Mentor, MentorFilters, Availability, TimeSlot, Stack } from "./types";
+export { useMentors, useMentorProfile, useMentorAvailability, useMyMentorId, useAvailabilityWindows, useCreateAvailabilityWindow, useUpdateAvailabilityWindow, useDeleteAvailabilityWindow } from "./hooks/useMentors";
+export type { Mentor, MentorFilters, Availability, TimeSlot, Stack, AvailabilityWindow, AvailabilityWindowInput } from "./types";

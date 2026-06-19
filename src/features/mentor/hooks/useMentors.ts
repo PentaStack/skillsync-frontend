@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as mentorApi from "../api/mentor.api";
-import type { MentorFilters } from "../types";
+import type { AvailabilityWindowInput, MentorFilters } from "../types";
 
 /**
  * TanStack Query hooks for mentor operations.
@@ -29,5 +29,47 @@ export function useMentorAvailability(mentorId: number, date: string) {
     queryKey: ["mentors", mentorId, "availability", date],
     queryFn: () => mentorApi.getMentorAvailability(mentorId, date),
     enabled: !!mentorId && !!date,
+  });
+}
+
+/** Fetch the current user's mentor profile id. */
+export function useMyMentorId() {
+  return useQuery({
+    queryKey: ["mentors", "me"],
+    queryFn: mentorApi.getMyMentorId,
+  });
+}
+
+/** Fetch all availability windows for a mentor. */
+export function useAvailabilityWindows(mentorId: number) {
+  return useQuery({
+    queryKey: ["mentors", mentorId, "availability", "windows"],
+    queryFn: () => mentorApi.getAvailabilityWindows(mentorId),
+    enabled: !!mentorId,
+  });
+}
+
+export function useCreateAvailabilityWindow(mentorId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: AvailabilityWindowInput) => mentorApi.createAvailabilityWindow(mentorId, body),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["mentors", mentorId, "availability", "windows"] }),
+  });
+}
+
+export function useUpdateAvailabilityWindow(mentorId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ windowId, ...body }: AvailabilityWindowInput & { windowId: number }) =>
+      mentorApi.updateAvailabilityWindow(mentorId, windowId, body),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["mentors", mentorId, "availability", "windows"] }),
+  });
+}
+
+export function useDeleteAvailabilityWindow(mentorId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (windowId: number) => mentorApi.deleteAvailabilityWindow(mentorId, windowId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["mentors", mentorId, "availability", "windows"] }),
   });
 }
