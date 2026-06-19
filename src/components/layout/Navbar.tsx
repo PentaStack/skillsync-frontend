@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
 import { useThemeStore } from "@/stores/theme.store";
 import { useI18n } from "@/i18n/i18n";
@@ -10,10 +10,16 @@ export function Navbar() {
   const { isAuthenticated, user, logout } = useAuthStore();
   const { theme, toggleTheme } = useThemeStore();
   const { t, locale, setLocale } = useI18n();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleLanguage = () => {
     setLocale(locale === "en" ? "ar" : "en");
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   const isAdmin = user?.role === "ADMIN";
@@ -95,7 +101,7 @@ export function Navbar() {
             </button>
 
             {isAuthenticated ? (
-              <button onClick={logout}
+              <button onClick={handleLogout}
                 className="hidden md:block font-body text-label-caps uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors">
                 {t("nav.logout")}
               </button>
@@ -169,7 +175,7 @@ export function Navbar() {
           )}
 
           {isAuthenticated ? (
-            <button onClick={() => { logout(); setIsMobileMenuOpen(false); }}
+            <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
               className="text-left text-on-surface-variant font-body text-body-md hover:text-primary transition-colors">
               {t("nav.logout")}
             </button>
