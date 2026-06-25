@@ -27,22 +27,22 @@ export function AppProviders({ children }: AppProvidersProps) {
           toastOptions={{
             duration: 4000,
             style: {
-              background: "#161412",
-              color: "#f9f8f7",
-              border: "1px solid #2a2826",
+              background: "var(--color-surface)",
+              color: "var(--color-text-primary)",
+              border: "1px solid var(--color-border)",
               borderRadius: "0.5rem",
               fontFamily: "Hanken Grotesk, sans-serif",
             },
             success: {
               iconTheme: {
                 primary: "#ff5e3a",
-                secondary: "#0b0a09",
+                secondary: "var(--color-canvas)",
               },
             },
             error: {
               iconTheme: {
-                primary: "#ffb4ab",
-                secondary: "#690005",
+                primary: "var(--color-error)",
+                secondary: "var(--color-on-error)",
               },
             },
           }}
