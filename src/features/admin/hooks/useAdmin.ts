@@ -138,8 +138,12 @@ export function useUpdateRegistrationVerification() {
       }
       toast.error("Failed to update registration");
     },
-    onSuccess: () => {
-      toast.success("Registration updated");
+    onSuccess: (_data, variables) => {
+      toast.success(
+        variables.isVerified
+          ? "Mentor application approved"
+          : "Mentor application rejected and account blocked",
+      );
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "registrations"] });

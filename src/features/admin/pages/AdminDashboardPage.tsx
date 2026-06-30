@@ -9,9 +9,7 @@ import { useI18n } from "@/i18n/i18n";
 import {
   useAdminStats,
   usePendingRegistrations,
-  usePendingLiveVerifications,
   useUpdateRegistrationVerification,
-  useUpdateLiveVerification,
 } from "../hooks/useAdmin";
 
 function StatCard({
@@ -201,16 +199,12 @@ function formatDate(dateString: string) {
 export default function AdminDashboardPage() {
   const { t } = useI18n();
   const [regPage, setRegPage] = useState(0);
-  const [livePage, setLivePage] = useState(0);
   const [processingRegIds, setProcessingRegIds] = useState<Set<number>>(new Set());
-  const [processingLiveIds, setProcessingLiveIds] = useState<Set<number>>(new Set());
 
   const { data: stats, isLoading: statsLoading } = useAdminStats();
   const { data: regData, isLoading: regLoading } = usePendingRegistrations(regPage);
-  const { data: liveData, isLoading: liveLoading } = usePendingLiveVerifications(livePage);
 
   const updateRegVerification = useUpdateRegistrationVerification();
-  const updateLiveVerification = useUpdateLiveVerification();
 
   function handleApproveRegistration(item: { id: number }) {
     setProcessingRegIds((prev) => new Set(prev).add(item.id));
@@ -235,38 +229,6 @@ export default function AdminDashboardPage() {
       {
         onSettled: () => {
           setProcessingRegIds((prev) => {
-            const next = new Set(prev);
-            next.delete(item.id);
-            return next;
-          });
-        },
-      },
-    );
-  }
-
-  function handleApproveLive(item: { id: number }) {
-    setProcessingLiveIds((prev) => new Set(prev).add(item.id));
-    updateLiveVerification.mutate(
-      { id: item.id, isVerified: true },
-      {
-        onSettled: () => {
-          setProcessingLiveIds((prev) => {
-            const next = new Set(prev);
-            next.delete(item.id);
-            return next;
-          });
-        },
-      },
-    );
-  }
-
-  function handleRejectLive(item: { id: number }) {
-    setProcessingLiveIds((prev) => new Set(prev).add(item.id));
-    updateLiveVerification.mutate(
-      { id: item.id, isVerified: false },
-      {
-        onSettled: () => {
-          setProcessingLiveIds((prev) => {
             const next = new Set(prev);
             next.delete(item.id);
             return next;
@@ -345,39 +307,22 @@ export default function AdminDashboardPage() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-display text-headline-md italic text-text-primary">
-          {t("admin.liveDirectoryUnverified")}
-        </h2>
-        <p className="mt-1 font-body text-body-md text-text-secondary">
-          {t("admin.liveDirectoryUnverifiedDesc")}
-        </p>
-        <div className="mt-4">
-          <AdminTable
-            columns={[
-              { header: t("student.nameEmail"), render: (item) => (
-                <div>
-                  <div className="font-medium">{item.displayName}</div>
-                  <div className="text-code-sm text-text-secondary">{item.email}</div>
-                </div>
-              )},
-              { header: t("admin.stacks.title"), render: (item) => item.stackName },
-              { header: t("mentor.sort.rating"), render: (item) =>
-                item.rating != null ? item.rating.toFixed(1) : "—"
-              },
-            ]}
-            data={liveData?.items ?? []}
-            loading={liveLoading}
-            page={livePage}
-            totalPages={liveData?.totalPages ?? 0}
-            totalElements={liveData?.totalElements ?? 0}
-            onPageChange={setLivePage}
-            onApprove={handleApproveLive}
-            onReject={handleRejectLive}
-            emptyTitle={t("admin.noPendingLiveVerifications")}
-            emptyDescription={t("admin.allMentorsAvailable")}
-            processingIds={processingLiveIds}
-          />
-        </div>
+        <Card className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 className="font-display text-headline-md italic text-text-primary">
+              {t("admin.directoryManagement")}
+            </h2>
+            <p className="mt-1 max-w-2xl font-body text-body-md text-text-secondary">
+              {t("admin.directoryManagementDesc")}
+            </p>
+          </div>
+          <Link to="/admin/students">
+            <Button variant="secondary">
+              <Users className="h-4 w-4" />
+              {t("admin.manageStudents")}
+            </Button>
+          </Link>
+        </Card>
       </section>
     </div>
   );
