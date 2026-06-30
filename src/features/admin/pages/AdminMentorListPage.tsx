@@ -16,7 +16,7 @@ export default function AdminMentorListPage() {
   const { data, isLoading } = useAllMentors(page);
   const updateStatus = useUpdateUserStatus();
 
-  function changeStatus(mentor: AdminMentorListResponse, status: "APPROVED" | "BLOCKED") {
+function changeStatus(mentor: AdminMentorListResponse, status: "APPROVED" | "BLOCKED") {
     setProcessingUserId(mentor.userId);
     updateStatus.mutate(
       { userId: mentor.userId, payload: { status } },
@@ -28,8 +28,11 @@ export default function AdminMentorListPage() {
               : t("admin.users.activatedSuccess"),
           );
         },
-        onError: (error: any) => {
-          toast.error(error?.message || t("admin.users.updateFailed"));
+        onError: (error: unknown) => {
+          const message = error && typeof error === "object" && "message" in error
+            ? (error as { message?: unknown }).message
+            : null;
+          toast.error(typeof message === "string" ? message : t("admin.users.updateFailed"));
         },
         onSettled: () => setProcessingUserId(null),
       },
@@ -66,19 +69,22 @@ export default function AdminMentorListPage() {
 
         {data?.items && data.items.length > 0 && (
           <>
-            <div className="overflow-x-auto rounded-xl border border-border">
-              <table className="w-full">
+            <div className="rounded-xl border border-border">
+              <table className="w-full table-fixed">
+                <colgroup>
+                  <col className="w-[28%]" />
+                  <col className="w-[24%]" />
+                  <col className="w-[14%]" />
+                  <col className="w-[16%]" />
+                  <col className="w-[18%]" />
+                </colgroup>
                 <thead>
                   <tr className="border-b border-border bg-surface-container-low">
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("student.nameEmail")}</th>
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.stacks.title")}</th>
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("mentor.titleLabel")}</th>
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("mentor.sort.rating")}</th>
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.rate")}</th>
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("mentor.sortBy")}</th>
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.users.status")}</th>
-                    <th className="px-4 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.sessions")}</th>
-                    <th className="px-4 py-3 text-right font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.actions")}</th>
+                    <th className="px-3 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("student.nameEmail")}</th>
+                    <th className="px-3 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("mentor.titleLabel")}</th>
+                    <th className="px-3 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.sessions")}</th>
+                    <th className="px-3 py-3 text-left font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.users.status")}</th>
+                    <th className="px-3 py-3 text-right font-body text-label-caps uppercase tracking-widest text-text-secondary">{t("admin.actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -89,29 +95,37 @@ export default function AdminMentorListPage() {
                         key={mentor.id}
                         className="border-b border-border last:border-b-0 transition-colors hover:bg-surface-container-low"
                       >
-                        <td className="px-4 py-3">
+                        <td className="px-3 py-3 align-top">
                           <Link to={`/admin/mentors/${mentor.id}`} className="block">
                             <div className="font-medium text-text-primary">{mentor.displayName}</div>
-                            <div className="text-code-sm text-text-secondary">{mentor.email}</div>
+                            <div className="break-words text-code-sm text-text-secondary">{mentor.email}</div>
                           </Link>
                         </td>
-                        <td className="px-4 py-3 font-body text-body-md text-text-primary">{mentor.stackName}</td>
-                        <td className="px-4 py-3 font-body text-body-md text-text-secondary max-w-xs truncate">{mentor.title}</td>
-                        <td className="px-4 py-3 font-body text-body-md text-text-primary">{mentor.rating != null ? mentor.rating.toFixed(1) : "—"}</td>
-                        <td className="px-4 py-3 font-body text-body-md text-text-primary">{t("mentor.hourlyRate").replace("{rate}", String(mentor.hourlyRate))}</td>
-                        <td className="px-4 py-3">
-                          <span className={`inline-block rounded-full px-2.5 py-0.5 text-label-caps uppercase tracking-wider ${mentor.available ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}`}>
-                            {mentor.available ? t("mentor.available") : t("mentor.unavailable")}
-                          </span>
+                        <td className="px-3 py-3 align-top font-body text-body-md">
+                          <div className="text-text-primary">{mentor.stackName}</div>
+                          <div className="mt-1 text-text-secondary">{mentor.title}</div>
                         </td>
-                        <td className="px-4 py-3">
-                          <Badge variant={mentor.isBlocked ? "error" : "success"}>
-                            {mentor.isBlocked ? t("admin.users.blocked") : t("admin.users.active")}
-                          </Badge>
+                        <td className="px-3 py-3 align-top font-body text-body-md text-text-primary">
+                          <div>{mentor.totalSessions}</div>
+                          <div className="mt-1 text-text-secondary">
+                            {mentor.rating != null ? mentor.rating.toFixed(1) : "—"} {t("mentor.rating")}
+                          </div>
+                          <div className="mt-1 text-text-secondary">
+                            {t("mentor.hourlyRate").replace("{rate}", String(mentor.hourlyRate))}
+                          </div>
                         </td>
-                        <td className="px-4 py-3 font-body text-body-md text-text-primary">{mentor.totalSessions}</td>
-                        <td className="px-4 py-3">
-                          <div className="flex justify-end gap-2">
+                        <td className="px-3 py-3 align-top">
+                          <div className="flex flex-col items-start gap-2">
+                            <span className={`inline-block rounded-full px-2.5 py-0.5 text-label-caps uppercase tracking-wider ${mentor.available ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}`}>
+                              {mentor.available ? t("mentor.available") : t("mentor.unavailable")}
+                            </span>
+                            <Badge variant={mentor.isBlocked ? "error" : "success"}>
+                              {mentor.isBlocked ? t("admin.users.blocked") : t("admin.users.active")}
+                            </Badge>
+                          </div>
+                        </td>
+                        <td className="px-3 py-3 align-top">
+                          <div className="flex flex-wrap justify-end gap-2">
                             <Button
                               variant="ghost"
                               size="sm"

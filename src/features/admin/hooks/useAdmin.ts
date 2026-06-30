@@ -144,6 +144,9 @@ export function useUpdateRegistrationVerification() {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "registrations"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "stats"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "allMentors"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "mentorDetail"] });
+      queryClient.invalidateQueries({ queryKey: ["mentors"] });
     },
   });
 }
@@ -194,6 +197,9 @@ export function useUpdateLiveVerification() {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "live"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "stats"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "allMentors"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "mentorDetail"] });
+      queryClient.invalidateQueries({ queryKey: ["mentors"] });
     },
   });
 }
