@@ -271,5 +271,59 @@
     "banner.quote": "Great code isn't just about syntax; it's about the clarity of thought behind it.",
     "banner.quoteAuthor": "Dr. Evelyn Reed",
     "banner.quoteRole": "Senior Staff Engineer",
-    "banner.cliVersion": "skillsync-cli --version v2.4.1 (academic-build)"
+    "banner.cliVersion": "skillsync-cli --version v2.4.1 (academic-build)",
+
+    "landing.hero.title": "Where Code Meets Academic Rigor",
+    "landing.hero.subtitle": "Engage in deep, 1-on-1 code reviews and academic mentorship with staff engineers from top tech organizations.",
+    "landing.hero.findMentor": "Find a Mentor",
+    "landing.hero.becomeMentor": "Become a Mentor",
+    "landing.hero.liveReview": "Live Review",
+
+    "landing.stats.mentors": "Expert Mentors",
+    "landing.stats.sessions": "Reviews Completed",
+    "landing.stats.rating": "Average Rating",
+    "landing.stats.turnaround": "Avg Turnaround",
+    "landing.stats.mentorsVal": "120+",
+    "landing.stats.sessionsVal": "8,400+",
+    "landing.stats.ratingVal": "4.9/5",
+    "landing.stats.turnaroundVal": "< 24 Hours",
+
+    "landing.pillars.title": "Built for Rigorous Development",
+    "landing.pillars.subtitle": "Our methodology blends traditional academic thoroughness with elite engineering standards.",
+    "landing.pillars.discourse.title": "Academic Discourse",
+    "landing.pillars.discourse.desc": "Go beyond linting. Discuss system architecture, memory efficiency, design patterns, and complexity tradeoffs.",
+    "landing.pillars.audits.title": "Expert Audits",
+    "landing.pillars.audits.desc": "Get thorough, line-by-line feedback on your merge requests from engineers who build web-scale infrastructure.",
+    "landing.pillars.scheduling.title": "Focused Sessions",
+    "landing.pillars.scheduling.desc": "Book direct, 45-minute synchronous video/audio sessions for pair programming or architecture whiteboarding.",
+
+    "landing.codeSim.header": "academic_review.rs",
+    "landing.codeSim.comment": "Excellent structural division here. However, using a concurrent hash map for connection pooling would prevent race conditions under load.",
+    "landing.codeSim.approver": "Evelyn Reed (Senior Staff)",
+
+    "landing.stacks.title": "Master Your Technology Stack",
+    "landing.stacks.subtitle": "Whether you are optimizing low-level systems or building distributed web apps, find domain specialists.",
+
+    "landing.howItWorks.title": "The Mentorship Journey",
+    "landing.howItWorks.subtitle": "Four steps to engineering excellence.",
+    "landing.howItWorks.step1.title": "Choose Your Track",
+    "landing.howItWorks.step1.desc": "Filter mentors by specialized stack, hourly rate, rating, or calendar availability.",
+    "landing.howItWorks.step2.title": "Schedule a Session",
+    "landing.howItWorks.step2.desc": "Select a 45-minute window that fits your schedule and describe what you want to cover.",
+    "landing.howItWorks.step3.title": "Engage in Discourse",
+    "landing.howItWorks.step3.desc": "Review code line-by-line, trace system bugs, or plan complex database migrations.",
+    "landing.howItWorks.step4.title": "Review Actionable Feedback",
+    "landing.howItWorks.step4.desc": "Access detailed evaluation notes, recommended materials, and automated session topic audits.",
+
+    "landing.testimonials.title": "What Scholars Say",
+    "landing.testimonials.subtitle": "Real experiences from students, developers, and tech leads who transformed their craft.",
+    "landing.testimonials.user1.quote": "The code review session on SkillSync saved me weeks of architectural refactoring. The feedback was incredibly thorough, academic in depth, yet immediately practical.",
+    "landing.testimonials.user1.author": "Alex Mercer",
+    "landing.testimonials.user1.role": "Systems Engineer at WebScale",
+    "landing.testimonials.user2.quote": "Mentoring on SkillSync is highly rewarding. The students are motivated, the platform supports seamless scheduling, and the focus is on true mastery, not shortcuts.",
+    "landing.testimonials.user2.author": "Sarah Jenkins",
+    "landing.testimonials.user2.role": "Principal Engineer & Mentor",
+
+    "landing.terminal.title": "Platform CLI Utilities",
+    "landing.terminal.runText": "Initializing academic-build session handshake..."
 }
